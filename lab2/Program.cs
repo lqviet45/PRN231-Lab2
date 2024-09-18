@@ -2,6 +2,7 @@ using lab2;
 using lab2.common;
 using Microsoft.AspNetCore.OData;
 using Microsoft.AspNetCore.OData.Routing;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -9,6 +10,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 builder.Services.AddEntityFrameworkSqlite()
     .AddDbContext<BookStoreDbContext>();
+
 builder.Services.AddControllers()
     .AddOData(op =>
     {
@@ -26,6 +28,12 @@ if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
+}
+
+using (var scope = app.Services.CreateScope())
+{
+    var dbContext = scope.ServiceProvider.GetRequiredService<BookStoreDbContext>();
+    await dbContext.Database.MigrateAsync();
 }
 
 app.UseODataBatching();
