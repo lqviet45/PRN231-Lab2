@@ -1,0 +1,8 @@
+﻿services:
+  lab2:
+    image: lab2
+    build:
+      context: .
+      dockerfile: lab2/Dockerfile
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
