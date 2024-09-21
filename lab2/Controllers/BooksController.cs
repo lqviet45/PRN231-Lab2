@@ -31,14 +31,18 @@ public class BooksController : ODataController
     [EnableQuery(PageSize = 10)]
     public async Task<IActionResult> Get()
     {
-        var books = await _context.Books.ToListAsync();
+        var books = await _context.Books
+            .Include(b => b.Press)
+            .ToListAsync();
         return Ok(books);
     }
 
     [EnableQuery]
     public async Task<IActionResult> Get(int key, string version)
     {
-        var book = await _context.Books.FirstOrDefaultAsync(b => b.Id == key);
+        var book = await _context.Books
+            .Include(b => b.Press)
+            .FirstOrDefaultAsync(b => b.Id == key);
         
         if (book == null)
         {

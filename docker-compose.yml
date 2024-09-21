@@ -6,3 +6,10 @@
       dockerfile: lab2/Dockerfile
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:80
+    volumes:
+      - ./lab2:/app
+    ports:
+      - "5110:80"
+volumes:
+    lab2:
